@@ -7,9 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -65,6 +67,19 @@ ArrayList<String> mute = new ArrayList();
     }
     }
   }
+  
+  @EventHandler
+  public void onPreCommand(PlayerCommandPreprocessEvent event)
+  {
+  	Player player = event.getPlayer();
+      String message = event.getMessage();
+      if (this.mute.contains(player.getName())) {
+      if (message.contains("/me"))
+      {
+          event.setCancelled(true);
+          player.sendMessage("Use of this command while muted has been blocked!");
+          return;
+      }}}
 
   @EventHandler
   public void onPlayerInteractEntity(PlayerInteractEntityEvent e)
@@ -77,6 +92,19 @@ ArrayList<String> mute = new ArrayList();
     }
     }
   }
+  
+  @EventHandler
+  public void OnPlayerDamage(EntityDamageEvent event) {
+	  Entity e = event.getEntity();
+	  if(e instanceof Player){
+		  Player p = (Player)e;
+		  if (this.frozen.contains(p.getName())){
+		  event.setCancelled(true);
+		  }
+	  }
+	  
+  }
+  
   @EventHandler
   public void onPlayerChat(AsyncPlayerChatEvent e)
   {
@@ -121,13 +149,12 @@ ArrayList<String> mute = new ArrayList();
             if (this.frozen.contains(target.getName()))
             {
               this.frozen.remove(target.getName());
-              Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-                ChatColor.GOLD + "Broadcast" + 
-                ChatColor.WHITE + "] " + 
-                ChatColor.DARK_GRAY + "Player " + 
+              
+              Bukkit.broadcast(ChatColor.DARK_GRAY + "Player " + 
                 ChatColor.RED + sender.getName() + 
                 ChatColor.DARK_GRAY + " has unfrozen " + 
-                ChatColor.RED + target.getName());
+                ChatColor.RED + target.getName(), "player.staff");
+              
               player.sendMessage(ChatColor.DARK_GRAY + 
                 "You have unfrozen player: " + 
                 ChatColor.RED + target.getName());
@@ -138,13 +165,12 @@ ArrayList<String> mute = new ArrayList();
             }
 
             this.frozen.add(target.getName());
-            Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-              ChatColor.GOLD + "Broadcast" + 
-              ChatColor.WHITE + "] " + 
-              ChatColor.DARK_GRAY + "Player " + 
+            
+            Bukkit.broadcast(ChatColor.DARK_GRAY + "Player " + 
               ChatColor.RED + sender.getName() + 
               ChatColor.DARK_GRAY + " has frozen " + 
-              ChatColor.RED + target.getName());
+              ChatColor.RED + target.getName(), "player.staff");
+            
             player.sendMessage(ChatColor.DARK_GRAY + 
               "You have frozen player: " + 
               ChatColor.RED + target.getName());
@@ -170,13 +196,12 @@ ArrayList<String> mute = new ArrayList();
             if (this.frozen.contains(target.getName()))
             {
               this.frozen.remove(target.getName());
-              Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-                ChatColor.GOLD + "Broadcast" + 
-                ChatColor.WHITE + "] " + 
-                ChatColor.DARK_GRAY + "Player " + 
+              
+              Bukkit.broadcast(ChatColor.DARK_GRAY + "Player " + 
                 ChatColor.RED + sender.getName() + 
                 ChatColor.DARK_GRAY + " has unfrozen " + 
-                ChatColor.RED + target.getName());
+                ChatColor.RED + target.getName(), "player.staff");
+              
               player.sendMessage(ChatColor.DARK_GRAY + 
                 "You have unfrozen player: " + 
                 ChatColor.RED + target.getName());
@@ -197,13 +222,12 @@ ArrayList<String> mute = new ArrayList();
               return false;
             }
             this.frozen.add(target.getName());
-            Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-              ChatColor.GOLD + "Broadcast" + 
-              ChatColor.WHITE + "] " + 
-              ChatColor.DARK_GRAY + "Player " + 
+            
+            Bukkit.broadcast(ChatColor.DARK_GRAY + "Player " + 
               ChatColor.RED + sender.getName() + 
               ChatColor.DARK_GRAY + " has frozen " + 
-              ChatColor.RED + target.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.DARK_GRAY + args[1] + ChatColor.DARK_GRAY + " minutes");
+              ChatColor.RED + target.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.DARK_GRAY + args[1] + ChatColor.DARK_GRAY + " minutes", "player.staff");
+            
             player.sendMessage(ChatColor.DARK_GRAY + 
               "You have frozen player: " + 
               ChatColor.RED + target.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.DARK_GRAY + args[1] + ChatColor.DARK_GRAY + " minutes");
@@ -271,12 +295,12 @@ ArrayList<String> mute = new ArrayList();
             if (this.mute.contains(target.getName()))
             {
               this.mute.remove(target.getName());
-              Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-                ChatColor.GOLD + "Broadcast" + 
-                ChatColor.WHITE + "] " + ChatColor.DARK_GRAY + 
+              
+              Bukkit.broadcast(ChatColor.DARK_GRAY + 
                 "Player " + ChatColor.RED + sender.getName() + 
                 ChatColor.DARK_GRAY + " has unmuted " + 
-                ChatColor.RED + target.getName());
+                ChatColor.RED + target.getName(), "player.staff");
+              
               sender.sendMessage(ChatColor.DARK_GRAY + 
                 "You have unmuted player: " + ChatColor.RED + 
                 target.getName());
@@ -287,12 +311,12 @@ ArrayList<String> mute = new ArrayList();
             }
 
             this.mute.add(target.getName());
-            Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-              ChatColor.GOLD + "Broadcast" + 
-              ChatColor.WHITE + "] " + ChatColor.DARK_GRAY + 
+            
+            Bukkit.broadcast(ChatColor.DARK_GRAY + 
               "Player " + ChatColor.RED + sender.getName() + 
               ChatColor.DARK_GRAY + " has muted " + 
-              ChatColor.RED + target.getName());
+              ChatColor.RED + target.getName(), "player.staff");
+            
             sender.sendMessage(ChatColor.DARK_GRAY + 
               "You have muted player: " + ChatColor.RED + 
               target.getName());
@@ -315,12 +339,8 @@ ArrayList<String> mute = new ArrayList();
             if (this.mute.contains(target.getName()))
             {
               this.mute.remove(target.getName());
-              Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
-                ChatColor.GOLD + "Broadcast" + 
-                ChatColor.WHITE + "] " + ChatColor.DARK_GRAY + 
-                "Player " + ChatColor.RED + sender.getName() + 
-                ChatColor.DARK_GRAY + " has unmuted " + 
-                ChatColor.RED + target.getName());
+              
+              Bukkit.broadcast(ChatColor.DARK_GRAY + "Player " + ChatColor.RED + sender.getName() + ChatColor.DARK_GRAY + " has unmuted " + ChatColor.RED + target.getName(), "player.staff");
               sender.sendMessage(ChatColor.DARK_GRAY + 
                 "You have unmuted player: " + ChatColor.RED + 
                 target.getName());
@@ -341,12 +361,12 @@ ArrayList<String> mute = new ArrayList();
               return false;
             }
             this.mute.add(target.getName());
-            Bukkit.broadcastMessage(ChatColor.WHITE + "[" + 
+            Bukkit.broadcast(ChatColor.WHITE + "[" + 
               ChatColor.GOLD + "Broadcast" + 
               ChatColor.WHITE + "] " + ChatColor.DARK_GRAY + 
               "Player " + ChatColor.RED + sender.getName() + 
               ChatColor.DARK_GRAY + " has muted " + 
-              ChatColor.RED + target.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.DARK_GRAY + args[1] + ChatColor.DARK_GRAY + " minutes");
+              ChatColor.RED + target.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.DARK_GRAY + args[1] + ChatColor.DARK_GRAY + " minutes", "player.staff");
             sender.sendMessage(ChatColor.DARK_GRAY + 
               "You have muted player: " + ChatColor.RED + 
               target.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.DARK_GRAY + args[1] + ChatColor.DARK_GRAY + " minutes");

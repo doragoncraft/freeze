@@ -17,3 +17,6 @@ permissions:
     player.mute:
         description: Allows you to use /mute
         default: op
+    player.staff:
+        description: allows you to staff
+        default: op
