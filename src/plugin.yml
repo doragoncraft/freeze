@@ -1,0 +1,14 @@
+name: Freeze
+version: 1.0
+description: Freeze players
+author: carl230690
+website: http://www.doragoncraft.com/
+main: me.carl230690.freeze.main
+
+commands:
+    freeze:
+        description: Allows you to freeze players
+permissions:
+    freeze.freeze:
+        description: Allows you to use /freeze
+        default: false
