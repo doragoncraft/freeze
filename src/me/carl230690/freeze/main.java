@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -75,6 +77,19 @@ ArrayList<String> mute = new ArrayList();
     }
     }
   }
+  @EventHandler
+  public void onPlayerChat(AsyncPlayerChatEvent e)
+  {
+    Player player = e.getPlayer();
+    if (this.mute.contains(player.getName()))
+    {
+      e.setCancelled(true);
+      player.sendMessage(ChatColor.WHITE + "[" + ChatColor.GOLD + 
+        "Reminder" + ChatColor.WHITE + "] " + ChatColor.RED + 
+        "You're muted!");
+    }
+  }
+
 
   public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
   {
@@ -373,6 +388,16 @@ ArrayList<String> mute = new ArrayList();
     return false;
   }
 }
-	
-	
+
+/*@EventHandler
+public void onPreCommand(PlayerCommandPreprocessEvent event)
+{
+	Player player = event.getPlayer();
+    String message = event.getMessage();
+    if (message.contains("/me"))
+    {
+        event.setCancelled(true);
+        player.sendMessage("Use of this command while muted has been blocked!.");
+        return;
+    }}             */
 	

@@ -1,14 +1,19 @@
-name: Freeze
+name: DoragonAdmin
 version: 1.0
 description: Freeze players
-author: carl230690
+author: carl230690, Drepic26
 website: http://www.doragoncraft.com/
 main: me.carl230690.freeze.main
 
 commands:
     freeze:
         description: Allows you to freeze players
+    mute:
+        description: Allows you to mute players
 permissions:
-    freeze.freeze:
+    player.freeze:
         description: Allows you to use /freeze
-        default: false
+        default: op
+    player.mute:
+        description: Allows you to use /mute
+        default: op
